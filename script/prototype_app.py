@@ -42,7 +42,7 @@ if uploaded_file is not None:
         model_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'models', 'cataract_model.pth'))
 
         # Debugging: Print the path
-        print("Resolved Model Path:", model_path)
+        # print("Resolved Model Path:", model_path)
 
         # Check if the file exists before loading
         if not os.path.exists(model_path):
