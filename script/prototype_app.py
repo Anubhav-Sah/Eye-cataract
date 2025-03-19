@@ -16,7 +16,7 @@ uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png
 if uploaded_file is not None:
     # Display the uploaded image
     image = Image.open(uploaded_file).convert('RGB')
-    st.image(image, caption='Uploaded Image', use_column_width=True)
+    st.image(image, caption='Uploaded Image', width=400)
     
     # Define the same transforms used in training (except data augmentation)
     transform = transforms.Compose([
@@ -38,7 +38,16 @@ if uploaded_file is not None:
         model = CNNModel().to(device)
         
         # Adjust the path to your saved model file as needed
-        model_path = os.path.join(os.getcwd(), '..', 'models', 'cataract_model.pth')
+        # Ensure correct path to the model
+        model_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'models', 'cataract_model.pth'))
+
+        # Debugging: Print the path
+        print("Resolved Model Path:", model_path)
+
+        # Check if the file exists before loading
+        if not os.path.exists(model_path):
+            raise FileNotFoundError(f"Model file not found at: {model_path}")
+        # model_path = os.path.join(os.getcwd(), '..', 'models', 'cataract_model.pth')
         model.load_state_dict(torch.load(model_path, map_location=device))
         
         # Set model to evaluation mode
